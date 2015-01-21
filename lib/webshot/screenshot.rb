@@ -4,6 +4,7 @@ module Webshot
   class Screenshot
     include Capybara::DSL
     include Singleton
+    require 'SecureRandom'
 
     def initialize(opts = {})
       Webshot.capybara_setup!
@@ -46,7 +47,7 @@ module Webshot
 
         # Check response code
         if page.driver.status_code.to_i == 200 || page.driver.status_code.to_i / 100 == 3
-          tmp = Tempfile.new(["webshot#{rand(Time.now).to_s}", ".png"])
+          tmp = Tempfile.new(["webshot#{SecureRandom.hex.to_s}", ".png"])
           tmp.close
           begin
             # Save screenshot to file
